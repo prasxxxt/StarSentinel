@@ -1,8 +1,10 @@
 using UnityEngine;
 
 /// <summary>
-/// Spawns bullets from the FirePoint when the player holds Fire (LMB or Space).
-/// Rate-limited via a fire interval. Phase 2 will rewire this to use object pooling.
+/// Spawns bullets from the FirePoint when the fire key is held.
+/// Refuses to fire unless the game is in the Playing state — this
+/// prevents bullets from spawning during pause / game-over screens.
+/// Game state is queried via the ServiceLocator pattern.
 /// </summary>
 public class PlayerShooter : MonoBehaviour
 {
@@ -18,10 +20,22 @@ public class PlayerShooter : MonoBehaviour
     [SerializeField] private float bulletSpeed = 15f;
 
     private float nextFireTime;
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        // Resolve the GameManager once via the Service Locator.
+        // Cached because Service Locator lookups, while cheap, aren't free.
+        gameManager = ServiceLocator.Get<GameManager>();
+    }
 
     private void Update()
     {
-        bool firePressed = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space);
+        // Gate: only fire when the game is actively being played.
+        if (gameManager == null || gameManager.CurrentState != GameState.Playing)
+            return;
+
+        bool firePressed = Input.GetKey(KeyCode.Space);
         if (firePressed && Time.time >= nextFireTime)
         {
             Fire();
@@ -36,7 +50,6 @@ public class PlayerShooter : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         if (bullet.TryGetComponent(out Rigidbody2D bulletRb))
         {
-            // firePoint.up = the ship's local "forward" direction in world space.
             bulletRb.linearVelocity = firePoint.up * bulletSpeed;
         }
     }

@@ -1,0 +1,138 @@
+using UnityEngine;
+
+/// <summary>
+/// The "object" half of the Type Object pattern.
+/// One generic enemy MonoBehaviour, parameterised by an EnemyData asset.
+/// Reads its appearance, stats, and movement style from the data on enable.
+/// Implements IDamageable so any source of damage (bullets today, lasers later)
+/// can hurt it without knowing the concrete subclass.
+/// </summary>
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Rigidbody2D))]
+public class Enemy : MonoBehaviour, IDamageable
+{
+    [Tooltip("The 'type' driving this instance. Drag an EnemyData asset here.")]
+    [SerializeField] private EnemyData data;
+
+    private SpriteRenderer spriteRenderer;
+    private int currentHealth;
+    private Transform playerTransform;
+    private Vector3 startPosition;
+    private float spawnTime;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void OnEnable()
+    {
+        // Apply the type's properties on (re)activation. Designed so this
+        // also works for pooled enemies later (Phase 2C / Phase 3).
+        if (data != null) ApplyData();
+
+        startPosition = transform.position;
+        spawnTime = Time.time;
+    }
+
+    private void Start()
+    {
+        // Cache the player reference once. FindWithTag is fine here — it
+        // only runs once per spawned enemy, never per frame.
+        var player = GameObject.FindWithTag("Player");
+        if (player != null) playerTransform = player.transform;
+    }
+
+    /// <summary>
+    /// Inject a data type at runtime. Used by the future spawner so the same
+    /// prefab can be turned into any kind of enemy at instantiation time.
+    /// </summary>
+    public void Initialize(EnemyData newData)
+    {
+        data = newData;
+        if (gameObject.activeInHierarchy) ApplyData();
+    }
+
+    private void ApplyData()
+    {
+        if (data.sprite != null) spriteRenderer.sprite = data.sprite;
+        spriteRenderer.color = data.color;
+        transform.localScale = new Vector3(data.scale, data.scale, 1f);
+        currentHealth = data.maxHealth;
+        gameObject.name = $"Enemy ({data.displayName})";
+    }
+
+    private void Update()
+    {
+        if (data == null) return;
+        UpdateMovement();
+    }
+
+    private void UpdateMovement()
+    {
+        switch (data.movementType)
+        {
+            case MovementType.Stationary:
+                // Intentionally no movement.
+                break;
+
+            case MovementType.LinearTowardPlayer:
+                if (playerTransform != null)
+                {
+                    Vector3 dir =
+                        (playerTransform.position - transform.position).normalized;
+                    transform.position += dir * data.moveSpeed * Time.deltaTime;
+                }
+                break;
+
+            case MovementType.Sine:
+                {
+                    float t = Time.time - spawnTime;
+                    Vector3 p = startPosition;
+                    p.x += Mathf.Sin(t * 2f) * 2f;
+                    p.y -= t * data.moveSpeed * 0.5f;
+                    transform.position = p;
+                    break;
+                }
+
+            case MovementType.Orbit:
+                {
+                    float angle = (Time.time - spawnTime) * data.moveSpeed;
+                    float radius = Mathf.Max(0.5f, startPosition.magnitude);
+                    transform.position = new Vector3(
+                        Mathf.Cos(angle) * radius,
+                        Mathf.Sin(angle) * radius,
+                        0f);
+                    break;
+                }
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        currentHealth -= amount;
+        if (currentHealth <= 0) Die();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            if (other.TryGetComponent(out PlayerHealth health))
+            {
+                health.TakeDamage(data.contactDamage);
+            }
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        EventBus.Publish(new EnemyDiedEvent
+        {
+            ScoreValue = data.scoreValue,
+            Position = transform.position
+        });
+        Destroy(gameObject);
+    }
+}

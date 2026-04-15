@@ -4,10 +4,10 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Ememy
   - Bullet
   - PowerUp
   - Asteroid
+  - Enemy
   layers:
   - Default
   - TransparentFX
