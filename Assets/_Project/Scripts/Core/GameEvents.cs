@@ -38,3 +38,35 @@ public class GameStateChangedEvent : GameEvent
     public GameState NewState;
     public GameState PreviousState;
 }
+
+// ---------- Wave events ----------
+
+public class WaveStartedEvent : GameEvent
+{
+    public int WaveNumber;
+    public string WaveName;
+    public int TotalEnemies;
+}
+
+public class WaveCompletedEvent : GameEvent
+{
+    public int WaveNumber;
+}
+
+public class AllWavesCompletedEvent : GameEvent { }
+
+public class PowerUpCollectedEvent : GameEvent
+{
+    public PowerUpData Data;
+}
+
+public class PowerUpActivatedEvent : GameEvent
+{
+    public PowerUpData Data;
+    public float Duration;
+}
+
+public class PowerUpExpiredEvent : GameEvent
+{
+    public PowerUpData Data;
+}

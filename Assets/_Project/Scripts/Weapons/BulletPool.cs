@@ -16,8 +16,8 @@ public class BulletPool : MonoBehaviour
 
     private void Awake()
     {
-        pool = new ObjectPool<Bullet>(bulletPrefab, initialSize, maxSize, transform);
         ServiceLocator.Register(this);
+        pool = new ObjectPool<Bullet>(bulletPrefab, initialSize, maxSize, transform);
     }
 
     public Bullet Get() => pool.Get();

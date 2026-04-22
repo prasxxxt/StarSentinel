@@ -44,5 +44,6 @@ public enum MovementType
     Stationary,
     LinearTowardPlayer,
     Sine,
-    Orbit
+    Orbit,
+    Drift
 }

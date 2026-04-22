@@ -1,10 +1,10 @@
 using UnityEngine;
 
 /// <summary>
-/// Spawns bullets via the BulletPool service when Fire is pressed.
-/// Gates firing on the GameManager's state (no shooting while paused
-/// or game-over). Both dependencies are resolved through the
-/// ServiceLocator — no direct references to other systems.
+/// Spawns bullets through the BulletPool service. Supports two power-up
+/// modifiers: a fire-rate multiplier (RapidFire) and a triple-shot mode
+/// (TripleShot). Both are toggled by the Subclass Sandbox power-up
+/// effects via the public Set* methods.
 /// </summary>
 public class PlayerShooter : MonoBehaviour
 {
@@ -15,7 +15,13 @@ public class PlayerShooter : MonoBehaviour
     [SerializeField] private float fireInterval = 0.2f;
     [SerializeField] private float bulletSpeed = 15f;
 
+    [Header("Triple-shot spread")]
+    [SerializeField] private float spreadAngle = 15f;
+
     private float nextFireTime;
+    private float fireRateMultiplier = 1f;
+    private bool tripleShotActive = false;
+
     private GameManager gameManager;
     private BulletPool bulletPool;
 
@@ -33,7 +39,7 @@ public class PlayerShooter : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime)
         {
             Fire();
-            nextFireTime = Time.time + fireInterval;
+            nextFireTime = Time.time + (fireInterval / fireRateMultiplier);
         }
     }
 
@@ -41,9 +47,31 @@ public class PlayerShooter : MonoBehaviour
     {
         if (firePoint == null || bulletPool == null) return;
 
+        SpawnBullet(0f);
+        if (tripleShotActive)
+        {
+            SpawnBullet(-spreadAngle);
+            SpawnBullet(spreadAngle);
+        }
+    }
+
+    private void SpawnBullet(float angleOffset)
+    {
         Bullet bullet = bulletPool.Get();
         bullet.transform.position = firePoint.position;
-        bullet.transform.rotation = firePoint.rotation;
-        bullet.Launch(firePoint.up * bulletSpeed);
+        bullet.transform.rotation = firePoint.rotation * Quaternion.Euler(0, 0, angleOffset);
+        bullet.Launch(bullet.transform.up * bulletSpeed);
+    }
+
+    // ---- Power-up hooks ----
+
+    public void SetFireRateMultiplier(float multiplier)
+    {
+        fireRateMultiplier = Mathf.Max(0.1f, multiplier);
+    }
+
+    public void SetTripleShotActive(bool active)
+    {
+        tripleShotActive = active;
     }
 }

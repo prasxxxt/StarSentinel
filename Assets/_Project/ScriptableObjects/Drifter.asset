@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f23c9e4723125844954c016d26bc5ab, type: 3}
   m_Name: Drifter
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  displayName: Enemy
+  displayName: Drifter
   sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  color: {r: 1, g: 0, b: 0, a: 1}
-  scale: 0.7
-  maxHealth: 3
-  scoreValue: 100
+  color: {r: 1, g: 0, b: 1, a: 1}
+  scale: 0.6
+  maxHealth: 1
+  scoreValue: 50
   contactDamage: 1
-  movementType: 0
-  moveSpeed: 0
+  movementType: 2
+  moveSpeed: 1

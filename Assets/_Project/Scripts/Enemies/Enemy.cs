@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour, IDamageable
     private int currentHealth;
     private Transform playerTransform;
     private Vector3 startPosition;
+    private Vector3 driftDirection;
     private float spawnTime;
 
     private void Awake()
@@ -33,6 +34,13 @@ public class Enemy : MonoBehaviour, IDamageable
 
         startPosition = transform.position;
         spawnTime = Time.time;
+
+        // If this is a drifting enemy, pick a random direction once on spawn.
+        if (data != null && data.movementType == MovementType.Drift)
+        {
+            float angle = Random.Range(0f, Mathf.PI * 2f);
+            driftDirection = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f);
+        }
     }
 
     private void Start()
@@ -66,6 +74,12 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         if (data == null) return;
         UpdateMovement();
+
+        // Despawn if too far from origin to avoid lingering off-screen.
+        if (transform.position.magnitude > 25f)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void UpdateMovement()
@@ -103,6 +117,11 @@ public class Enemy : MonoBehaviour, IDamageable
                         Mathf.Cos(angle) * radius,
                         Mathf.Sin(angle) * radius,
                         0f);
+                    break;
+                }
+            case MovementType.Drift:
+                {
+                    transform.position += driftDirection * data.moveSpeed * Time.deltaTime;
                     break;
                 }
         }
