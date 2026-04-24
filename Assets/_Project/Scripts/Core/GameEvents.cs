@@ -55,6 +55,8 @@ public class WaveCompletedEvent : GameEvent
 
 public class AllWavesCompletedEvent : GameEvent { }
 
+// ---------- Powerup events ----------
+
 public class PowerUpCollectedEvent : GameEvent
 {
     public PowerUpData Data;
@@ -69,4 +71,16 @@ public class PowerUpActivatedEvent : GameEvent
 public class PowerUpExpiredEvent : GameEvent
 {
     public PowerUpData Data;
+}
+
+// ---------- Save events ----------
+
+public class HighScoreUpdatedEvent : GameEvent
+{
+    public int NewHighScore;
+}
+
+public class BestWaveUpdatedEvent : GameEvent
+{
+    public int NewBestWave;
 }

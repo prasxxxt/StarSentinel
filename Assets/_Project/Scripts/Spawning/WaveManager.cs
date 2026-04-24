@@ -18,7 +18,7 @@ public class WaveManager : MonoBehaviour
 
     [Header("Loop on completion")]
     [Tooltip("If true, after the last wave we loop back to the first " +
-             "wave with steadily increasing difficulty (count x1.5 each loop).")]
+             "wave with steadily increasing difficulty (count x N each loop).")]
     [SerializeField] private bool loopWaves = true;
 
     // Tracks living enemies for the current wave. Using a List rather
@@ -103,6 +103,7 @@ public class WaveManager : MonoBehaviour
         {
             currentWaveIndex++;
 
+            // End-of-list handling: loop or stop.
             if (currentWaveIndex >= waves.Count)
             {
                 if (!loopWaves)
@@ -117,13 +118,13 @@ public class WaveManager : MonoBehaviour
             WaveData wave = waves[currentWaveIndex];
             if (wave == null)
             {
-                // Should never trigger after BeginWaves filtering, but
-                // defensive in case a wave is destroyed mid-game.
+                // Defensive — Awake filtering should have removed these.
                 Debug.LogWarning(
                     $"[WaveManager] Wave at index {currentWaveIndex} is null. Skipping.");
                 continue;
             }
 
+            // Pause before the wave begins.
             yield return new WaitForSeconds(wave.delayBeforeWave);
 
             EventBus.Publish(new WaveStartedEvent
@@ -134,8 +135,10 @@ public class WaveManager : MonoBehaviour
                     wave.CountTotalEnemies() * loopMultiplier)
             });
 
+            // Spawn the wave.
             yield return StartCoroutine(SpawnWave(wave));
 
+            // Wait until every enemy from this wave is gone (killed or despawned).
             while (liveEnemies.Count > 0)
                 yield return null;
 
@@ -144,5 +147,45 @@ public class WaveManager : MonoBehaviour
                 WaveNumber = currentWaveIndex + 1
             });
         }
+    }
+
+    private IEnumerator SpawnWave(WaveData wave)
+    {
+        if (wave.spawnGroups == null) yield break;
+
+        foreach (var group in wave.spawnGroups)
+        {
+            if (group == null || group.enemyType == null) continue;
+
+            int adjustedCount = Mathf.RoundToInt(group.count * loopMultiplier);
+            for (int i = 0; i < adjustedCount; i++)
+            {
+                if (gameManager == null
+                    || gameManager.CurrentState != GameState.Playing)
+                    yield break;
+
+                SpawnEnemy(group.enemyType);
+                yield return new WaitForSeconds(group.spawnInterval);
+            }
+        }
+    }
+
+    private void SpawnEnemy(EnemyData type)
+    {
+        if (enemyPrefab == null || type == null) return;
+
+        Vector2 spawnPos = GetRandomEdgePosition();
+        Enemy enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        enemy.Initialize(type);
+        liveEnemies.Add(enemy);
+    }
+
+    private Vector2 GetRandomEdgePosition()
+    {
+        // Pick a random angle around the origin, place the spawn at radius distance.
+        float angle = Random.Range(0f, Mathf.PI * 2f);
+        return new Vector2(
+            Mathf.Cos(angle) * spawnRadius,
+            Mathf.Sin(angle) * spawnRadius);
     }
 }
