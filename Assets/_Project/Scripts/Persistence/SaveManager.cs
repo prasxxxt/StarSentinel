@@ -21,7 +21,6 @@ public class SaveManager : MonoBehaviour
     private void Awake()
     {
         ServiceLocator.Register(this);
-        // Persist across scene loads so menu and gameplay share state.
         DontDestroyOnLoad(gameObject);
         Load();
     }
@@ -44,8 +43,6 @@ public class SaveManager : MonoBehaviour
     {
         Save();
     }
-
-    // ---- Public API ----
 
     public void SetMasterVolume(float v)
     {
@@ -87,8 +84,6 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    // ---- Event handlers ----
-
     private void OnScoreChanged(ScoreChangedEvent evt)
     {
         if (evt.NewScore > Data.highScore)
@@ -115,7 +110,6 @@ public class SaveManager : MonoBehaviour
 
     private void OnPlayerDied(PlayerDiedEvent evt)
     {
-        // Save on death (the moment the high score is "locked in").
         Save();
     }
 }

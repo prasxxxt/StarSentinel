@@ -10,17 +10,20 @@ public class HUD : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private GameObject newBestIndicator;
 
     private void OnEnable()
     {
         EventBus.Subscribe<ScoreChangedEvent>(OnScoreChanged);
         EventBus.Subscribe<GameStateChangedEvent>(OnGameStateChanged);
+        EventBus.Subscribe<HighScoreUpdatedEvent>(OnHighScoreUpdated);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<ScoreChangedEvent>(OnScoreChanged);
         EventBus.Unsubscribe<GameStateChangedEvent>(OnGameStateChanged);
+        EventBus.Unsubscribe<HighScoreUpdatedEvent>(OnHighScoreUpdated);
     }
 
     private void Start()
@@ -40,5 +43,10 @@ public class HUD : MonoBehaviour
     {
         // Hook for showing/hiding HUD elements based on game state.
         // We'll flesh this out in later phases.
+    }
+
+    private void OnHighScoreUpdated(HighScoreUpdatedEvent evt)
+    {
+        if (newBestIndicator != null) newBestIndicator.SetActive(true);
     }
 }

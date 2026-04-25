@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("HELLO FROM " + gameObject.name);
         ChangeState(initialState);
     }
 
