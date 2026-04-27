@@ -21,6 +21,9 @@ public class Enemy : MonoBehaviour, IDamageable
     private Vector3 driftDirection;
     private float spawnTime;
 
+    private Color baseColor;
+    private Coroutine flashRoutine;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -65,11 +68,11 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         if (data.sprite != null) spriteRenderer.sprite = data.sprite;
         spriteRenderer.color = data.color;
+        baseColor = data.color;                             // NEW
         transform.localScale = new Vector3(data.scale, data.scale, 1f);
         currentHealth = data.maxHealth;
         gameObject.name = $"Enemy ({data.displayName})";
     }
-
     private void Update()
     {
         if (data == null) return;
@@ -130,6 +133,13 @@ public class Enemy : MonoBehaviour, IDamageable
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
+
+        // Hit flash + SFX
+        if (flashRoutine != null) StopCoroutine(flashRoutine);
+        flashRoutine = StartCoroutine(HitFlash());
+        var audio = ServiceLocator.Get<AudioManager>();
+        if (audio != null) audio.Play("enemy_hit");
+
         if (currentHealth <= 0) Die();
     }
 
@@ -153,5 +163,12 @@ public class Enemy : MonoBehaviour, IDamageable
             Position = transform.position
         });
         Destroy(gameObject);
+    }
+    private System.Collections.IEnumerator HitFlash()
+    {
+        spriteRenderer.color = Color.white;
+        yield return new WaitForSeconds(0.06f);
+        spriteRenderer.color = baseColor;
+        flashRoutine = null;
     }
 }

@@ -47,6 +47,10 @@ public class PlayerShooter : MonoBehaviour
     {
         if (firePoint == null || bulletPool == null) return;
 
+        // SFX
+        var audio = ServiceLocator.Get<AudioManager>();
+        if (audio != null) audio.Play("shoot");
+
         SpawnBullet(0f);
         if (tripleShotActive)
         {

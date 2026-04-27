@@ -19,5 +19,5 @@ MonoBehaviour:
   maxHealth: 4
   scoreValue: 50
   contactDamage: 1
-  movementType: 0
-  moveSpeed: 1.5
+  movementType: 1
+  moveSpeed: 0.5
