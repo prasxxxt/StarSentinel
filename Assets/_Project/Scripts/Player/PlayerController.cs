@@ -49,8 +49,8 @@ public class PlayerController : MonoBehaviour
     private void HandleRotation()
     {
         float input = 0f;
-        if (Input.GetKey(KeyCode.A)) input += 1f; // counter-clockwise
-        if (Input.GetKey(KeyCode.D)) input -= 1f; // clockwise
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) input += 1f;
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) input -= 1f;
 
         if (input != 0f)
         {
@@ -60,18 +60,16 @@ public class PlayerController : MonoBehaviour
 
     private void HandleThrust()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
-            // transform.up = the direction the ship's nose currently points
             rb.AddForce(transform.up * thrustForce);
         }
     }
 
     private void HandleBrake()
     {
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
-            // Smoothly bring velocity toward zero. Frame-rate independent.
             rb.linearVelocity = Vector2.MoveTowards(
                 rb.linearVelocity,
                 Vector2.zero,

@@ -36,7 +36,7 @@ public class PlayerShooter : MonoBehaviour
         if (gameManager == null || gameManager.CurrentState != GameState.Playing)
             return;
 
-        if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime)
+        if ((Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) && Time.time >= nextFireTime)
         {
             Fire();
             nextFireTime = Time.time + (fireInterval / fireRateMultiplier);
