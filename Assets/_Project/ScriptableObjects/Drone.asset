@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Drone
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   displayName: Drone
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  color: {r: 1, g: 0, b: 0, a: 1}
+  sprite: {fileID: -8082249768011107866, guid: f65717b37d4c5fe48ba792911e14e00f, type: 3}
+  color: {r: 1, g: 1, b: 1, a: 1}
   scale: 0.7
   maxHealth: 3
   scoreValue: 100

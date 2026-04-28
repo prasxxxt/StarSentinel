@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        // Register self with the Service Locator so other systems
-        // (UI, audio, save, etc.) can find us without holding direct refs.
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
         ServiceLocator.Register(this);
     }
 

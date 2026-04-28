@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Asteroid
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   displayName: Asteroid
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: -1957121737005926835, guid: 40c942f17a47e4e4494e1165ded37401, type: 3}
   color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   scale: 1
   maxHealth: 4

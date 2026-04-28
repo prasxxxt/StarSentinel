@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: TripleShot
   m_EditorClassIdentifier: Assembly-CSharp::TripleShotPowerUpData
   displayName: Triple Shot
-  icon: {fileID: 0}
-  color: {r: 0.6039216, g: 0.8039216, b: 0.1960784, a: 1}
+  icon: {fileID: -1403664739873535720, guid: 32b34f85b47c7ff48badca666982f40c, type: 3}
+  color: {r: 1, g: 1, b: 1, a: 1}
   duration: 7
