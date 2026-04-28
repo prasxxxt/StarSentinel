@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Chaser
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   displayName: Chaser
-  sprite: {fileID: 344444095998456113, guid: fffdd66e869c7294c9feab39f050b42a, type: 3}
+  sprite: {fileID: 2093427683916521760, guid: c861f9447fb0cd84480a487ca9f79ea7, type: 3}
   color: {r: 1, g: 1, b: 1, a: 1}
   scale: 0.7
   maxHealth: 2

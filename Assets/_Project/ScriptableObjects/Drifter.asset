@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Drifter
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   displayName: Drifter
-  sprite: {fileID: 4884443935584289356, guid: 58eaed8dde94ddb4da446b72464b6ed3, type: 3}
+  sprite: {fileID: 1720890604366921625, guid: d3e1ab300ddeecd4cb258ed4e48dcae0, type: 3}
   color: {r: 1, g: 1, b: 1, a: 1}
-  scale: 0.7
+  scale: 0.6
   maxHealth: 1
   scoreValue: 50
-  contactDamage: 1
-  movementType: 2
-  moveSpeed: 1
+  contactDamage: 0
+  movementType: 1
+  moveSpeed: 1.5

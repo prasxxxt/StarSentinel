@@ -27,14 +27,21 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
+        if (ServiceLocator.IsRegistered<AudioManager>())
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         ServiceLocator.Register(this);
+        DontDestroyOnLoad(gameObject);
 
         // Build lookup table.
         foreach (var s in sounds)
             if (s != null && !string.IsNullOrEmpty(s.id))
                 lookup[s.id] = s;
 
-        // Pre-create SFX sources as children. Avoids per-shot AddComponent.
+        // Pre-create SFX sources as children.
         for (int i = 0; i < sfxSourceCount; i++)
         {
             var go = new GameObject($"SFX_{i}");

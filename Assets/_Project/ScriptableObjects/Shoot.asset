@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shoot
   m_EditorClassIdentifier: Assembly-CSharp::SoundData
   id: shoot
-  clip: {fileID: 8300000, guid: 242d16183cab6834086a4d5573941f66, type: 3}
+  clip: {fileID: 8300000, guid: 83c54307172e79c439896afe95d8ae5c, type: 3}
   volume: 1
   minPitch: 1
   maxPitch: 1

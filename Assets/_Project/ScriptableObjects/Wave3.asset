@@ -20,4 +20,7 @@ MonoBehaviour:
   - enemyType: {fileID: 11400000, guid: 7bfa60861e195564cb91c48511a8d8dc, type: 2}
     count: 3
     spawnInterval: 0.8
+  - enemyType: {fileID: 11400000, guid: dfa3c1dd2971c15408bf9781d7c4afaa, type: 2}
+    count: 2
+    spawnInterval: 0.3
   delayBeforeWave: 3

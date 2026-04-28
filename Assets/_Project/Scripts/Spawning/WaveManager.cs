@@ -142,9 +142,10 @@ public class WaveManager : MonoBehaviour
             while (liveEnemies.Count > 0)
                 yield return null;
 
+            int displayWaveNumber = (loopMultiplier - 1) * waves.Count + currentWaveIndex + 1;
             EventBus.Publish(new WaveCompletedEvent
             {
-                WaveNumber = currentWaveIndex + 1
+                WaveNumber = displayWaveNumber
             });
         }
     }
