@@ -47,8 +47,8 @@ public class PlayerShooter : MonoBehaviour
     {
         if (firePoint == null || bulletPool == null) return;
 
-        // SFX
         var audio = ServiceLocator.Get<AudioManager>();
+        Debug.Log($"[PlayerShooter] Fire. AudioManager = {(audio != null ? "OK" : "NULL")}");
         if (audio != null) audio.Play("shoot");
 
         SpawnBullet(0f);
@@ -67,7 +67,7 @@ public class PlayerShooter : MonoBehaviour
         bullet.Launch(bullet.transform.up * bulletSpeed);
     }
 
-    // ---- Power-up hooks ----
+    // Powerup hooks
 
     public void SetFireRateMultiplier(float multiplier)
     {

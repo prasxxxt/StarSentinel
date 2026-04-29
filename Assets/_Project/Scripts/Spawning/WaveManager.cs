@@ -77,7 +77,7 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
-        // Filter out null entries — these come from empty Inspector slots.
+        // Filter out null entries - these come from empty Inspector slots.
         int removed = waves.RemoveAll(w => w == null);
         if (removed > 0)
         {
@@ -118,7 +118,7 @@ public class WaveManager : MonoBehaviour
             WaveData wave = waves[currentWaveIndex];
             if (wave == null)
             {
-                // Defensive — Awake filtering should have removed these.
+                // Defensive - Awake filtering should have removed these.
                 Debug.LogWarning(
                     $"[WaveManager] Wave at index {currentWaveIndex} is null. Skipping.");
                 continue;

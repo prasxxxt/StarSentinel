@@ -3,9 +3,9 @@ using UnityEngine;
 public class CameraShake : MonoBehaviour
 {
     [SerializeField] private float defaultDuration = 0.25f;
-    [SerializeField] private float defaultMagnitude = 3f;   // EXAGGERATED for testing
+    [SerializeField] private float defaultMagnitude = 3f;
     [SerializeField] private float deathDuration = 0.6f;
-    [SerializeField] private float deathMagnitude = 5f;     // EXAGGERATED
+    [SerializeField] private float deathMagnitude = 5f;
 
     private Vector3 originalPosition;
     private float shakeTimeRemaining = 0f;

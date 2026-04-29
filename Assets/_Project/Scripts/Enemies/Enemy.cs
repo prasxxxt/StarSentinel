@@ -31,8 +31,8 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void OnEnable()
     {
-        // Apply the type's properties on (re)activation. Designed so this
-        // also works for pooled enemies later (Phase 2C / Phase 3).
+        // Apply the type's properties on reactivation. Designed so this
+        // also works for pooled enemies later.
         if (data != null) ApplyData();
 
         startPosition = transform.position;
@@ -48,8 +48,8 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        // Cache the player reference once. FindWithTag is fine here — it
-        // only runs once per spawned enemy, never per frame.
+        // Cache the player reference once. FindWithTag is fine hereit
+        // it only runs once per spawned enemy, never per frame.
         var player = GameObject.FindWithTag("Player");
         if (player != null) playerTransform = player.transform;
     }

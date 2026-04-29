@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public abstract class GameEvent { }
 
-// ---------- Gameplay events ----------
+//Gameplay events
 
 public class EnemyDiedEvent : GameEvent
 {
@@ -26,7 +26,7 @@ public class PlayerDamagedEvent : GameEvent
 
 public class PlayerDiedEvent : GameEvent { }
 
-// ---------- State events ----------
+//State events
 
 public class GameStateChangedEvent : GameEvent
 {
@@ -34,7 +34,7 @@ public class GameStateChangedEvent : GameEvent
     public GameState PreviousState;
 }
 
-// ---------- Wave events ----------
+//Wave events
 
 public class WaveStartedEvent : GameEvent
 {
@@ -50,7 +50,7 @@ public class WaveCompletedEvent : GameEvent
 
 public class AllWavesCompletedEvent : GameEvent { }
 
-// ---------- Power-up events ----------
+//Power-up events
 
 public class PowerUpCollectedEvent : GameEvent
 {
@@ -68,7 +68,7 @@ public class PowerUpExpiredEvent : GameEvent
     public PowerUpData Data;
 }
 
-// ---------- Save events ----------
+//Save events
 
 public class HighScoreUpdatedEvent : GameEvent
 {

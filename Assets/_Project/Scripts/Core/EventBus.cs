@@ -80,7 +80,7 @@ public static class EventBus
         }
     }
 
-    /// <summary>Wipe queue and subscribers. Call on scene reload.</summary>
+    /// Wipe queue and subscribers. Call on scene reload.
     public static void ClearAll()
     {
         _queue.Clear();

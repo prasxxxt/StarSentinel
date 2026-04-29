@@ -2,13 +2,16 @@
 
 /// <summary>
 /// Teleports the GameObject to the opposite edge of the camera's view
-/// when it crosses a viewport boundary. Used for the player ship.
-/// Enemies do NOT have this component (per design).
+/// when it crosses a viewport boundary. On wrap, spawns a brief flash
+/// effect at both the exit and entry positions for visual polish.
 /// </summary>
 public class ScreenWrapper : MonoBehaviour
 {
     [Tooltip("How far past the edge before we wrap. Prevents flicker.")]
     [SerializeField] private float padding = 0.2f;
+
+    [Tooltip("Optional: particle prefab spawned at exit and entry points on wrap.")]
+    [SerializeField] private GameObject teleportFlashPrefab;
 
     private Camera mainCamera;
 
@@ -20,39 +23,49 @@ public class ScreenWrapper : MonoBehaviour
     private void LateUpdate()
     {
         Vector3 viewportPos = mainCamera.WorldToViewportPoint(transform.position);
-        Vector3 newPos = transform.position;
+        Vector3 oldPos = transform.position;
+        Vector3 newPos = oldPos;
         bool wrapped = false;
 
         if (viewportPos.x < 0f)
         {
-            // Off the left edge → teleport to the right
             newPos = new Vector3(GetRightEdgeX() - padding, newPos.y, newPos.z);
             wrapped = true;
         }
         else if (viewportPos.x > 1f)
         {
-            // Off the right edge → teleport to the left
             newPos = new Vector3(GetLeftEdgeX() + padding, newPos.y, newPos.z);
             wrapped = true;
         }
 
         if (viewportPos.y < 0f)
         {
-            // Off the bottom edge → teleport to the top
             newPos = new Vector3(newPos.x, GetTopEdgeY() - padding, newPos.z);
             wrapped = true;
         }
         else if (viewportPos.y > 1f)
         {
-            // Off the top edge → teleport to the bottom
             newPos = new Vector3(newPos.x, GetBottomEdgeY() + padding, newPos.z);
             wrapped = true;
         }
 
         if (wrapped)
         {
+            // Flash at exit point (where we vanished from)
+            SpawnFlash(oldPos);
+            // Flash at entry point (where we reappear)
+            SpawnFlash(newPos);
+
             transform.position = newPos;
         }
+    }
+
+    private void SpawnFlash(Vector3 position)
+    {
+        var audio = ServiceLocator.Get<AudioManager>();
+        if (audio != null) audio.Play("teleport");
+        if (teleportFlashPrefab == null) return;
+        Instantiate(teleportFlashPrefab, position, Quaternion.identity);
     }
 
     private float GetLeftEdgeX() =>

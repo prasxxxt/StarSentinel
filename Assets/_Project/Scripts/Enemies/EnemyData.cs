@@ -4,7 +4,7 @@ using UnityEngine;
 /// The "type" half of the Type Object pattern.
 /// A pure data asset describing one variety of enemy: appearance,
 /// stats, and movement style. Shared across all Enemy instances of
-/// this type — the runtime entities (Enemy.cs) hold a reference here.
+/// this type - the runtime entities (Enemy.cs) hold a reference here.
 ///
 /// New enemy types are created in the Unity editor as new asset files;
 /// no new C# code is needed to introduce a new variant.

@@ -20,6 +20,13 @@ public class SaveManager : MonoBehaviour
 
     private void Awake()
     {
+        // Persist across scenes.
+        if (ServiceLocator.IsRegistered<SaveManager>())
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         ServiceLocator.Register(this);
         DontDestroyOnLoad(gameObject);
         Load();

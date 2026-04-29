@@ -51,11 +51,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        // ---- The Event Queue pump ----
+        // The Event Queue pump
         // Every frame, drain queued events and deliver them to handlers.
         EventBus.ProcessQueue();
 
-        // ---- Pause toggle ----
+        // Pause toggle
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (CurrentState == GameState.Playing)
@@ -65,8 +65,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ---------- FSM core ----------
-
+    // FSM core
     /// <summary>Transition the FSM to a new state, firing exit/enter logic.</summary>
     public void ChangeState(GameState newState)
     {
@@ -108,7 +107,7 @@ public class GameManager : MonoBehaviour
         // Per-state cleanup. Nothing yet; we'll fill this in later phases.
     }
 
-    // ---------- Score handling (event listener) ----------
+    // Score handling event listener
 
     private void OnEnemyDied(EnemyDiedEvent evt)
     {
