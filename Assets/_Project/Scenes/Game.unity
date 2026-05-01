@@ -3011,7 +3011,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e9522c1b51b7e3046924f8ae8940a3d3, type: 2}
   - {fileID: 11400000, guid: 217ca5c8a6608cf4daa5a660efeb47a5, type: 2}
   - {fileID: 11400000, guid: 76fee9da0dd4c284180cb05e971cfbd6, type: 2}
-  dropChance: 1
+  dropChance: 0.5
 --- !u!4 &1320850813
 Transform:
   m_ObjectHideFlags: 0

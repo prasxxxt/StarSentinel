@@ -12,6 +12,7 @@ using UnityEngine;
 [CreateAssetMenu(
     fileName = "NewEnemyData",
     menuName = "StarSentinel/Enemy Data")]
+
 public class EnemyData : ScriptableObject
 {
     [Header("Identity")]
