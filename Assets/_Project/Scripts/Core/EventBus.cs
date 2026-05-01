@@ -20,6 +20,15 @@ public static class EventBus
     private static readonly Dictionary<Type, List<Delegate>> _subscribers =
         new Dictionary<Type, List<Delegate>>();
 
+
+    /// <summary>Remove a previously-registered handler.</summary>
+    public static void Unsubscribe<T>(Action<T> handler) where T : GameEvent
+    {
+        var type = typeof(T);
+        if (_subscribers.TryGetValue(type, out var list))
+            list.Remove(handler);
+    }
+
     /// <summary>
     /// Register a handler for events of type T.
     /// Always pair with Unsubscribe in OnDisable to avoid leaks.
@@ -31,22 +40,12 @@ public static class EventBus
             _subscribers[type] = new List<Delegate>();
         _subscribers[type].Add(handler);
     }
-
-    /// <summary>Remove a previously-registered handler.</summary>
-    public static void Unsubscribe<T>(Action<T> handler) where T : GameEvent
-    {
-        var type = typeof(T);
-        if (_subscribers.TryGetValue(type, out var list))
-            list.Remove(handler);
-    }
-
     /// <summary>Enqueue an event for delivery on the next pump.</summary>
     public static void Publish(GameEvent evt)
     {
         if (evt == null) return;
         _queue.Enqueue(evt);
     }
-
     /// <summary>
     /// Drain the queue and dispatch each event to its handlers.
     /// Called once per frame from GameManager.Update.
@@ -59,7 +58,6 @@ public static class EventBus
         {
             var evt = _queue.Dequeue();
             var type = evt.GetType();
-
             if (_subscribers.TryGetValue(type, out var handlers))
             {
                 // Snapshot in case a handler unsubscribes during iteration.

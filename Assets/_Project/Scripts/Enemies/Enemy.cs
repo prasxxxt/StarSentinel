@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour, IDamageable
         switch (data.movementType)
         {
             case MovementType.Stationary:
-                // Intentionally no movement.
+                // intenttionally no movement
                 break;
 
             case MovementType.LinearTowardPlayer:

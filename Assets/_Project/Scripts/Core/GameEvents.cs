@@ -7,47 +7,38 @@ using UnityEngine;
 public abstract class GameEvent { }
 
 //Gameplay events
-
 public class EnemyDiedEvent : GameEvent
 {
     public int ScoreValue;
     public Vector3 Position;
 }
-
 public class ScoreChangedEvent : GameEvent
 {
     public int NewScore;
 }
-
 public class PlayerDamagedEvent : GameEvent
 {
     public int RemainingHealth;
 }
-
 public class PlayerDiedEvent : GameEvent { }
 
 //State events
-
 public class GameStateChangedEvent : GameEvent
 {
     public GameState NewState;
     public GameState PreviousState;
 }
-
 //Wave events
-
 public class WaveStartedEvent : GameEvent
 {
     public int WaveNumber;
     public string WaveName;
     public int TotalEnemies;
 }
-
 public class WaveCompletedEvent : GameEvent
 {
     public int WaveNumber;
 }
-
 public class AllWavesCompletedEvent : GameEvent { }
 
 //Power-up events
